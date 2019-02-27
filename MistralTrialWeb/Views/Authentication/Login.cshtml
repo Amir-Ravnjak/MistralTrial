@@ -1,0 +1,23 @@
+﻿@{
+    string message = (string)TempData["message"];
+ }
+
+<div class="container" style="width:40%;">
+    <h2>Login</h2>
+    <form class="form-signin" action="Login" method="post">
+        @if (message != null)
+        {
+            <h5 class="alert alert-danger">@message</h5>
+        }
+        <input type="text" autocomplete="off" name="username" class="form-control" placeholder="Username" autofocus />
+        <input type="password" name="password" class="form-control" placeholder="Password" />
+        <input type="submit" class="btn btn-lg btn-primary btn-block" value="Login" />
+
+    </form>
+    <br />
+    <br />
+
+    <a href="/authentication/register" class="btn btn-primary btn-block ">Register now</a>
+
+    <a href="/" class="btn btn-primary btn-block ">Homepage</a>
+</div>

@@ -1,0 +1,36 @@
+﻿@using MistralTrialWeb.ViewModels;
+@model HomeTitlesVM
+
+
+
+
+@foreach (var x in Model.rows)
+{
+    <div class="title">
+        <div id="image">
+            <img src="@Url.Action("ViewImage", "Home", new { ImageId = x.ImageId })" alt="Nema sliku" />
+        </div>
+        <div id="text">
+            <h2>@x.Name</h2>
+            <h5>@x.Description</h5>
+            <h5>
+                Actors: @for (int i = 0; i < x.actors.Count; i++)
+                {
+                    @(x.actors[i].Name + " " + x.actors[i].Surname)
+                    if (!(i + 1 == x.actors.Count))
+                    {
+                        <span>, </span>
+                    }
+
+                }
+            </h5>
+            <br />
+            <h5>Average grade: @x.AverageGrade / 5</h5>
+        </div>
+
+    </div>
+}
+
+
+
+

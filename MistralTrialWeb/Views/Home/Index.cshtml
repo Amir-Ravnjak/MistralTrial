@@ -1,0 +1,203 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using MistralTrialAPI.Data
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<div id="container1">
+
+
+    <input class="form-control" type="text" autocomplete="off" name="search" id="search" onkeyup="searchTitles()" onkeydown="searchTitles" placeholder="Search titles" />
+
+
+    <button class="btn btn-primary" id="movies">Movies</button>
+    <button class="btn btn-primary" id="tvshows">TV shows</button>
+    <div id="ajaxCall">
+
+    </div>
+    <button class="btn btn-primary" id="seeMore">See more...</button>
+    <br />
+    <a href="#" class="btn btn-warning" id="seeAll">See all...</a>
+</div>
+
+<script>
+
+    var position = 0;
+
+    $("document").ready(function myfunction() {
+        $.get("/Home/get10Titles?titleType="+@((int) TitleTypes.Movie)+"&position="+position, function (rezultat, status) {
+            $("#ajaxCall").html(rezultat);
+            $("#movies").addClass("active");
+            position += 10;
+        });
+    });
+
+    $("#movies").click(function myfunction() {
+        position = 0;
+        $.get("/Home/get10Titles?titleType=" +@((int) TitleTypes.Movie)+"&position=" + position, function (rezultat, status) {
+            $("#ajaxCall").html(rezultat);
+
+            document.getElementById("search").value = "";
+
+            $("#searchResult").html("");
+            position += 10;
+        })
+    }
+    );
+    $("#tvshows").click(function myfunction() {
+        position = 0;
+        $.get("/Home/get10Titles?titleType=" +@((int) TitleTypes.TVShow)+"&position=" + position, function (rezultat, status) {
+            $("#ajaxCall").html(rezultat);
+
+            document.getElementById("search").value = "";
+
+            $("#searchResult").html("");
+            position += 10;
+        })
+    }
+    );
+
+    $("#seeMore").click(function myfunction() {
+
+        var urlMovies = "/home/get10titles?titleType=" +@((int) TitleTypes.Movie)+"&position=" + position;
+        var urlTvShows = "/home/get10titles?titleType=" +@((int) TitleTypes.TVShow)+"&position=" + position;
+
+        var query = document.getElementById("search").value;
+        if ($("#movies").hasClass("active")) {
+            if (query.length > 1)
+                urlMovies += "&query="+query;
+            $.get(urlMovies, function (rezultat, status) {
+                $("#ajaxCall").html($("#ajaxCall").html()+rezultat);
+
+                position += 10;
+            })
+        }
+        else {
+
+            if (query.length > 1)
+                urlTvShows += "&query=" + query;
+            $.get(urlTvShows, function (rezultat, status) {
+                $("#ajaxCall").html($("#ajaxCall").html() +rezultat);
+
+            position += 10;
+        })
+        }
+    }
+    );
+
+    $("#seeAll").click(function myfunction() {
+
+        if ($("#movies").hasClass("active")) {
+            $("#seeAll").attr("href","/Home/TitleList?titleType="+@((int) TitleTypes.Movie))
+        }
+        else {
+            $("#seeAll").attr("href","/Home/TitleList?titleType="+@((int) TitleTypes.TVShow))
+        }
+    }
+    );
+
+    $("#movies").click(function myfunction() {
+        this.classList.add("active");
+        $("#tvshows").removeClass("active");
+    });
+    $("#tvshows").click(function myfunction() {
+        this.classList.add("active");
+        $("#movies").removeClass("active");
+    });
+
+
+</script>
+<script>
+
+    function searchTitles() {
+        position = 10;
+        var query = document.getElementById("search").value;
+        if (query.length > 1) {
+            if ($("#movies").hasClass("active")) {
+                $.get("/Home/get10Titles?titleType=" +@((int) TitleTypes.Movie)+"&query=" + query, function (rezultat, status) {
+                    $("#ajaxCall").html(rezultat);
+                });
+            }
+            else {
+                $.get("/Home/get10Titles?titleType=" +@((int) TitleTypes.TVShow)+"&query=" + query, function (rezultat, status) {
+                    $("#ajaxCall").html(rezultat);
+                });
+            }
+        }
+        else {
+            if ($("#movies").hasClass("active")) {
+                $.get("/Home/get10Titles?titleType=" +@((int) TitleTypes.Movie), function (rezultat, status) {
+                    $("#ajaxCall").html(rezultat);
+                });
+            }
+            else {
+                $.get("/Home/get10Titles?titleType=" +@((int) TitleTypes.TVShow), function (rezultat, status) {
+                    $("#ajaxCall").html(rezultat);
+                });
+            }
+        }
+
+
+    }
+</script>
+
+
+<style>
+
+    .showDiv {
+        display: block;
+        position: absolute;
+    }
+
+    .hideDiv {
+        display: none;
+    }
+
+    #container1 {
+        text-align: center;
+        width: 50%;
+        left: 0;
+        right: 0;
+        margin: auto;
+    }
+
+    .title {
+        text-align: center;
+        padding: 2pc;
+        margin: 1pc;
+        background-color: burlywood;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        text-align: left;
+    }
+
+    #image {
+        display: flex;
+        flex: 1;
+        flex-wrap: wrap;
+        margin-left: 5%;
+    }
+
+        #image img {
+            height: auto;
+            width: 10pc;
+            max-width: 90%;
+        }
+
+    #text {
+        flex: 2;
+        margin: 5%;
+        max-width: 100%;
+    }
+
+
+    button {
+        margin: 2pc;
+    }
+</style>
+

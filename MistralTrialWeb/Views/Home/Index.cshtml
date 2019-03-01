@@ -25,17 +25,18 @@
 </div>
 
 <script>
-
+    console.log("loaded");
     var position = 0;
 
     $("document").ready(function myfunction() {
-        $.get("/Home/get10Titles?titleType="+@((int) TitleTypes.Movie)+"&position="+position, function (rezultat, status) {
+        $.get("/Home/get10Titles?titleType=" +@((int) TitleTypes.Movie)+"&position=" + position, function (rezultat, status) {
+            
+            
             $("#ajaxCall").html(rezultat);
             $("#movies").addClass("active");
-            position += 10;
+            position += 10; 
         });
     });
-
     $("#movies").click(function myfunction() {
         position = 0;
         $.get("/Home/get10Titles?titleType=" +@((int) TitleTypes.Movie)+"&position=" + position, function (rezultat, status) {

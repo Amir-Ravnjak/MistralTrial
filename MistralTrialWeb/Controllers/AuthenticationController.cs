@@ -27,7 +27,7 @@ namespace MistralTrialWeb.Controllers
             HttpClient client = new HttpClient();
 
 
-            client.BaseAddress = new Uri("https://localhost:44343/");
+            client.BaseAddress = new Uri("https://mistraltrialapi.azurewebsites.net/");
             HttpResponseMessage response = new HttpResponseMessage();
 
             Authentication.AuthorizeApi(client, response);
@@ -59,7 +59,7 @@ namespace MistralTrialWeb.Controllers
             HttpClient client = new HttpClient();
 
 
-            client.BaseAddress = new Uri("https://localhost:44343/");
+            client.BaseAddress = new Uri("https://mistraltrialapi.azurewebsites.net/");
             HttpResponseMessage response = new HttpResponseMessage();
 
             Authentication.AuthorizeApi(client, response);
